@@ -1,0 +1,179 @@
+#include <stdio.h>
+#include <algorithm>
+#include <cassert>
+#include <iostream>
+#include <string>
+#include<time.h>
+using namespace std;
+template <class T>
+void HoanVi(T& a, T& b)
+{
+	T x = a;
+	a = b;
+	b = x;
+}
+
+//-------------------------------------------------
+
+// Hàm phát sinh mảng dữ liệu ngẫu nhiên
+void GenerateRandomData(int a[], int n)
+{
+	srand((unsigned int)time(NULL));
+
+	for (int i = 0; i < n; i++)
+	{
+		a[i] = rand() % n;
+	}
+}
+
+// Hàm phát sinh mảng dữ liệu có thứ tự tăng dần
+void GenerateSortedData(int a[], int n)
+{
+	for (int i = 0; i < n; i++)
+	{
+		a[i] = i;
+	}
+}
+
+// Hàm phát sinh mảng dữ liệu có thứ tự ngược (giảm dần)
+void GenerateReverseData(int a[], int n)
+{
+	for (int i = 0; i < n; i++)
+	{
+		a[i] = n - 1 - i;
+	}
+}
+
+// Hàm phát sinh mảng dữ liệu gần như có thứ tự
+void GenerateNearlySortedData(int a[], int n)
+{
+	for (int i = 0; i < n; i++)
+	{
+		a[i] = i;
+	}
+	srand((unsigned int)time(NULL));
+	for (int i = 0; i < 10; i++)
+	{
+		int r1 = rand() % n;
+		int r2 = rand() % n;
+		HoanVi(a[r1], a[r2]);
+	}
+}
+
+void GenerateData(int a[], int n, int dataType)
+{
+	switch (dataType)
+	{
+	case 0:	// ngẫu nhiên
+		GenerateRandomData(a, n);
+		break;
+	case 1:	// có thứ tự
+		GenerateSortedData(a, n);
+		break;
+	case 2:	// có thứ tự ngược
+		GenerateReverseData(a, n);
+		break;
+	case 3:	// gần như có thứ tự
+		GenerateNearlySortedData(a, n);
+		break;
+	default:
+		printf("Error: unknown data type!\n");
+	}
+}
+void insertionSort(int arr[], int n,int &count_compare)
+{
+	count_compare = 0;
+
+	int i; 
+	int key; 
+	int j;
+	for (i = 1 ; ++count_compare && i < n ; i++)
+	{	
+		key = arr[i];
+		j = i - 1; 
+		while (( ++count_compare && j >= 0) && (arr[j] > key && ++count_compare))
+		{
+			arr[j + 1] = arr[j]; 
+			j = j - 1; 
+		}
+		arr[j + 1] = key; 
+
+	}
+}
+
+void heapRebuild(int start, int arr[], int n, int &count_compare ) {
+	int leftChild = 2 * start + 1;
+	if ( ++count_compare && leftChild >= n) return;
+	int largerChild = leftChild; 
+	int rightChild = 2 * start + 2; 
+	if ( ++count_compare && rightChild < n) { 
+		if ( ++count_compare && arr[rightChild] > arr[largerChild])
+			largerChild = rightChild; 
+
+	}
+	if ( ++count_compare && arr[start] < arr[largerChild] ) {
+		swap(arr[largerChild], arr[start]);
+		heapRebuild(largerChild, arr, n,count_compare);
+	}
+}
+void heapSort(int arr[], int n, int& count_compare) {
+	
+	count_compare = 0;
+	int index;
+	for ( index = (n - 1) / 2; ++count_compare && index >= 0; index--)
+	{
+		heapRebuild(index, arr, n, count_compare);
+	}
+		
+	swap(arr[0], arr[n - 1]);
+	int heapSize = n - 1;
+	while (heapSize > 1 && ++count_compare) {
+		heapRebuild(0, arr, heapSize,count_compare); 
+		heapSize--; 
+		swap(arr[0], arr[heapSize]);
+	}
+}
+void counting_sort(int arr[], int n, int u, int &count_compare) { 
+	count_compare = 0;
+	int* f = new int[u + 1]{ 0 };
+	for (int i = 0 ; ++count_compare && i < n ; i++)
+		f[arr[i]] ++;
+	for (int i = 1; ++count_compare && i <= u; i++)
+		f[i] = f[i - 1] + f[i];
+	int* b = new int[n];
+	for (int i = n - 1; ++count_compare && i >= 0; i--) {
+		b[f[arr[i]] - 1] = arr[i];
+		f[arr[i]]--;
+	}
+	for (int i = 0; ++count_compare && i < n; i++)
+		arr[i] = b[i];
+
+}
+void Print_Array(int a[100], int& n)
+{
+	for (int i = 0; i < n; i++)
+	{
+		cout << a[i] << "  ";
+	}
+	cout << endl;
+}
+int main()
+{
+	int count_compare;
+	int u,n;
+	cout << " So phan tu cua mang la : ";
+	cin >> n;
+	u = n;
+	int* a;
+	a = new int[n];
+	int datatype;
+	cout << " Mang duoc sap xep theo kieu : ";
+	cin >> datatype;
+	GenerateData(a, n, datatype);
+	//Print_Array(a, n);
+	//insertionSort(a, n,count_compare);
+	//heapSort(a, n,count_compare);
+	counting_sort(a, n,u, count_compare);
+	cout << "comparisons : " <<  count_compare << endl;
+	//Print_Array(a, n);
+}
