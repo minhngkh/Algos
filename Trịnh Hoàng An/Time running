@@ -1,0 +1,185 @@
+#include <stdio.h>
+#include <algorithm>
+#include <cassert>
+#include <iostream>
+#include <string>
+#include<time.h>
+#define MAX_SIZE 16382
+
+using namespace std;
+template <class T>
+void HoanVi(T& a, T& b)
+{
+	T x = a;
+	a = b;
+	b = x;
+}
+
+
+void GenerateRandomData(int a[], int n)
+{
+	srand((unsigned int)time(NULL));
+
+	for (int i = 0; i < n; i++)
+	{
+		a[i] = rand() % n;
+	}
+}
+
+// Hàm phát sinh mảng dữ liệu có thứ tự tăng dần
+void GenerateSortedData(int a[], int n)
+{
+	for (int i = 0; i < n; i++)
+	{
+		a[i] = i;
+	}
+}
+
+// Hàm phát sinh mảng dữ liệu có thứ tự ngược (giảm dần)
+void GenerateReverseData(int a[], int n)
+{
+	for (int i = 0; i < n; i++)
+	{
+		a[i] = n - 1 - i;
+	}
+}
+
+// Hàm phát sinh mảng dữ liệu gần như có thứ tự
+void GenerateNearlySortedData(int a[], int n)
+{
+	for (int i = 0; i < n; i++)
+	{
+		a[i] = i;
+	}
+	srand((unsigned int)time(NULL));
+	for (int i = 0; i < 10; i++)
+	{
+		int r1 = rand() % n;
+		int r2 = rand() % n;
+		HoanVi(a[r1], a[r2]);
+	}
+}
+
+void GenerateData(int a[], int n, int dataType)
+{
+	switch (dataType)
+	{
+	case 0:	// ngẫu nhiên
+		GenerateRandomData(a, n);
+		break;
+	case 1:	// có thứ tự
+		GenerateSortedData(a, n);
+		break;
+	case 2:	// có thứ tự ngược
+		GenerateReverseData(a, n);
+		break;
+	case 3:	// gần như có thứ tự
+		GenerateNearlySortedData(a, n);
+		break;
+	default:
+		printf("Error: unknown data type!\n");
+	}
+}
+
+void insertionSort(int arr[], int n)
+{
+	clock_t start, end;
+	double time_use;
+	start = clock();
+    int i, key, j;
+    for (i = 1; i < n; i++)
+    {
+        key = arr[i];
+        j = i - 1;
+        while (j >= 0 && arr[j] > key)
+        {
+            arr[j + 1] = arr[j];
+            j = j - 1;
+        }
+        arr[j + 1] = key;
+		
+    }
+	end = clock();
+	time_use = (double(end) - double(start)) / CLOCKS_PER_SEC;
+	cout << " Time insertion sort " << time_use << endl;
+}
+void heapRebuild(int start, int arr[], int n) {
+	int leftChild = 2 * start + 1; // A left child must exist
+	if (leftChild >= n) return;
+	int largerChild = leftChild; // Make assumption about larger child
+	int rightChild = 2 * start + 2; // A right child might not exist
+	if (rightChild < n) { // Whether a right child exists
+	// A right child exists; check whether it is larger
+		if (arr[rightChild] > arr[largerChild])
+			largerChild = rightChild; // Assumption was wrong
+
+	}
+	// If arr[start] is smaller than the larger child, swap values
+	if (arr[start] < arr[largerChild]) {
+		swap(arr[largerChild], arr[start]);
+		heapRebuild(largerChild, arr, n); // Recursion at that child
+	}
+}
+void heapSort(int arr[], int n) {
+	clock_t start, end;
+	double time_use;
+	start = clock();
+	// Build initial heap
+	for (int index = (n - 1) / 2; index >= 0; index--)
+		heapRebuild(index, arr, n);
+	swap(arr[0], arr[n - 1]); // swap the largest element to the end
+	int heapSize = n - 1; // Heap region size decreases by 1
+	while (heapSize > 1) {
+		heapRebuild(0, arr, heapSize);
+		heapSize--;
+		swap(arr[0], arr[heapSize]);
+	}
+	end = clock();
+	time_use = (double(end) - double(start)) / CLOCKS_PER_SEC;
+	cout << " Time heap sort " << time_use << endl;
+}
+void counting_sort(int arr[], int n, int u) {
+	clock_t start, end;
+	double time_use;
+	start = clock();
+	int* f = new int[u + 1]{ 0 };
+	for (int i = 0; i < n; i++)
+		f[arr[i]] ++;
+	for (int i = 1; i <= u; i++)
+		f[i] = f[i - 1] + f[i];
+	int* b = new int[n];
+	for (int i = n - 1; i >= 0; i--) {
+		b[f[arr[i]] - 1] = arr[i];
+		f[arr[i]]--;
+	}
+	for (int i = 0; i < n; i++)
+		arr[i] = b[i];
+	end = clock();
+	time_use = (double(end) - double(start)) / CLOCKS_PER_SEC;
+	cout << " Time counting sort " << time_use << endl;
+}
+void Print_Array(int a[100], int& n)
+{
+	for (int i = 0; i < n; i++)
+	{
+		cout << a[i] << "  ";
+	}
+	cout << endl;
+}
+int main()
+{
+	int n;
+	int *a;
+	a = new int[1000000];
+	int datatype;
+	cout << " So phan tu cua mang la : "; 
+	cin >> n;
+	cout << " Mang duoc sap xep theo kieu : ";
+	cin >> datatype;
+	GenerateData(a, n, datatype);
+	//Print_Array(a, n);
+	insertionSort(a, n);
+	//heapSort(a, n);
+	//counting_sort(a, n);
+	//Print_Array(a, n);
+}
