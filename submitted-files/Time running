@@ -86,7 +86,7 @@ void insertionSort(int arr[], int n)
 	clock_t start, end;
 	double time_use;
 	start = clock();
-    int i, key, j;
+	int i, key, j;
     for (i = 1; i < n; i++)
     {
         key = arr[i];

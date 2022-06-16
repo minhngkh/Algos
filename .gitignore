@@ -31,3 +31,6 @@ bin/
 #ignore test
 test/
 data/*.bin
+
+#ignore spell config
+cspell.json
