@@ -48,6 +48,12 @@
         "stdexcept": "cpp",
         "typeinfo": "cpp",
         "chrono": "cpp",
-        "time running": "cpp"
+        "time running": "cpp",
+        "unordered_set": "cpp",
+        "optional": "cpp",
+        "future": "cpp",
+        "stop_token": "cpp",
+        "thread": "cpp",
+        "variant": "cpp"
     }
 }

@@ -4,7 +4,7 @@
 
 struct Info {
     double time = 0;
-    int comparisons = 0;
+    long long comparisons = 0;
 };
 
 typedef std::chrono::_V2::steady_clock::time_point Time;
