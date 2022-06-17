@@ -9,8 +9,8 @@
                 "-fdiagnostics-color=always",
                 "-g",
                 "-o",
-                "debug",
-                "*.cpp"
+                "bin/debug",
+                "src/*.cpp"
             ],
             "options": {
                 "cwd": "${workspaceFolder}"
