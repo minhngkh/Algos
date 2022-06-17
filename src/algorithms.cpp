@@ -1,5 +1,11 @@
 #include "algorithms.hpp"
 
+void Swap(int &num1, int &num2) {
+    int temp = num1;
+    num1 = num2; 
+    num2 = temp;
+}
+
 // Selection sort
 void SelectionSortWithoutCounting(int arr[], int n) {
     for (int i = 0; i < n - 1; ++i) {
@@ -7,7 +13,7 @@ void SelectionSortWithoutCounting(int arr[], int n) {
 
         for (int j = i + 1; j < n; ++j)
             if (arr[cur_min] > arr[j]) cur_min = j;
-        std::swap(arr[cur_min], arr[i]);
+        Swap(arr[cur_min], arr[i]);
     }
 }
 
@@ -18,7 +24,7 @@ void SelectionSortWithCounting(int arr[], int n, long long &comparisons) {
 
         for (int j = i + 1; ++comparisons && (j < n); ++j)
             if (++comparisons && arr[cur_min] > arr[j]) cur_min = j;
-        std::swap(arr[cur_min], arr[i]);
+        Swap(arr[cur_min], arr[i]);
     }
 }
 
@@ -94,7 +100,7 @@ void ShakerSortWithoutCounting(int arr[], int n) {
     do {
         for (int j = right; j >= left; --j)
             if (arr[j - 1] > arr[j]) {
-                std::swap(arr[j - 1], arr[j]);
+                Swap(arr[j - 1], arr[j]);
                 k = j;
             }  // Smaller elements to the top
 
@@ -102,7 +108,7 @@ void ShakerSortWithoutCounting(int arr[], int n) {
 
         for (int j = left; j <= right; ++j)
             if (arr[j - 1] > arr[j]) {
-                std::swap(arr[j - 1], arr[j]);
+                Swap(arr[j - 1], arr[j]);
                 k = j;
             }  // Larger elements to the end
 
@@ -116,7 +122,7 @@ void ShakerSortWithCounting(int arr[], int n, long long &comparisons) {
     do {
         for (int j = right; j >= left && ++comparisons; --j)
             if (arr[j - 1] > arr[j] && ++comparisons) {
-                std::swap(arr[j - 1], arr[j]);
+                Swap(arr[j - 1], arr[j]);
                 k = j;
             }  // Smaller elements to the top
 
@@ -124,7 +130,7 @@ void ShakerSortWithCounting(int arr[], int n, long long &comparisons) {
 
         for (int j = left; j <= right && ++comparisons; ++j)
             if (arr[j - 1] > arr[j] && ++comparisons) {
-                std::swap(arr[j - 1], arr[j]);
+                Swap(arr[j - 1], arr[j]);
                 k = j;
             }  // Larger elements to the end
 
@@ -160,7 +166,7 @@ void HeapRebuildWithoutCounting(int start, int arr[], int n) {
     }
     // If arr[start] is smaller than the larger child, swap values
     if (arr[start] < arr[largerChild]) {
-        std::swap(arr[largerChild], arr[start]);
+        Swap(arr[largerChild], arr[start]);
         HeapRebuildWithoutCounting(largerChild, arr, n);  // Recursion at that child
     }
 }
@@ -169,12 +175,12 @@ void HeapSortWithoutCounting(int arr[], int n) {
     // Build initial heap
     for (int index = (n - 1) / 2; index >= 0; index--)
         HeapRebuildWithoutCounting(index, arr, n);
-    std::swap(arr[0], arr[n - 1]);  // swap the largest element to the end
+    Swap(arr[0], arr[n - 1]);  // swap the largest element to the end
     int heapSize = n - 1;           // Heap region size decreases by 1
     while (heapSize > 1) {
         HeapRebuildWithoutCounting(0, arr, heapSize);
         heapSize--;
-        std::swap(arr[0], arr[heapSize]);
+        Swap(arr[0], arr[heapSize]);
     }
 }
 
@@ -187,7 +193,7 @@ void HeapRebuildWithCounting(int start, int arr[], int n, long long comparisons)
         if (++comparisons && arr[rightChild] > arr[largerChild]) largerChild = rightChild;
     }
     if (++comparisons && arr[start] < arr[largerChild]) {
-        std::swap(arr[largerChild], arr[start]);
+        Swap(arr[largerChild], arr[start]);
         HeapRebuildWithCounting(largerChild, arr, n, comparisons);
     }
 }
@@ -199,12 +205,12 @@ void HeapSortWithCounting(int arr[], int n, long long comparisons) {
         HeapRebuildWithCounting(index, arr, n, comparisons);
     }
 
-    std::swap(arr[0], arr[n - 1]);
+    Swap(arr[0], arr[n - 1]);
     int heapSize = n - 1;
     while (heapSize > 1 && ++comparisons) {
         HeapRebuildWithCounting(0, arr, heapSize, comparisons);
         heapSize--;
-        std::swap(arr[0], arr[heapSize]);
+        Swap(arr[0], arr[heapSize]);
     }
 }
 
@@ -412,6 +418,8 @@ Info CountingSort(int arr[], int n) {
     Time start = GetCurrTime();
     CountingSortWithoutCounting(arr, n);
     Time end = GetCurrTime();
+
+    return result;
 }
 
 // Radix sort
