@@ -9,29 +9,12 @@
 
 using std::cout, std::string, std::vector, std::stringstream, std::ifstream, std::stoi;
 
-bool NameConverter(char *str, vector<string> &result) {
-    stringstream ss(str);
-    string name;
-
-    while (getline(ss, name, '-')) {
-        result.push_back(name);
-    }
-
-    if (result.back() == "sort") {
-        result.pop_back();
-
-        return true;
-    }
-
-    return false;
-}
-
 bool NameConverter(string str, string &result) {
     stringstream ss(str);
     string name;
 
     getline(ss, name, '-');
-    
+
     string temp;
     if (getline(ss, temp) && temp == "sort") {
         result = name;
@@ -65,7 +48,6 @@ int main(int argc, char **argv) {
     //     std::cin >> argv[i];
     // }
 
-
     const int MIN_ARGS = 5;
     const int MAX_ARGS = 6;
     const int MAX_DATA_SIZE = 1000000;
@@ -74,7 +56,6 @@ int main(int argc, char **argv) {
     const vector<string> validOutputModes = {"-time", "-comp", "-both"};
     const vector<string> validInputOrders = {"-rand", "-nsorted", "-sorted", "-rev"};
 
-
     // Check number of arguments
     if (argc <= 1 || argc < MIN_ARGS) {
         cout << "Missing argument(s)";
@@ -82,28 +63,20 @@ int main(int argc, char **argv) {
         return 0;
     }
 
-    if (argc > MAX_ARGS) 
-        return DisplayInvalidErr();
+    if (argc > MAX_ARGS) return DisplayInvalidErr();
 
     // Check mode
     string mode = argv[1];
 
     if (mode == "-a") {
         // Check if all algorithms are valid
-        vector<string> inputAlgos;
-        if (!NameConverter(argv[2], inputAlgos))
-            return DisplayInvalidErr();
-
-        for (int i = 0; i < inputAlgos.size(); i++) {
-            if (!InArray(inputAlgos[i], validAlgos))
-                return DisplayInvalidErr();
-        }
+        string algo;
+        if (!(NameConverter(argv[2], algo) && InArray(algo, validAlgos))) return DisplayInvalidErr();
 
         // Check if output mode is valid
         string outputMode = argv[argc - 1];
 
-        if (!InArray(outputMode, validOutputModes)) 
-            return DisplayInvalidErr();
+        if (!InArray(outputMode, validOutputModes)) return DisplayInvalidErr();
 
         // Check whether the input argument is a file path or a number
         ifstream ifs(argv[3]);
@@ -113,7 +86,7 @@ int main(int argc, char **argv) {
             if (argc > 5)
                 DisplayInvalidErr();
             else
-                Command1(inputAlgos, ifs, outputMode);
+                Command1(algo, ifs, outputMode);
 
             ifs.close();
 
@@ -128,8 +101,7 @@ int main(int argc, char **argv) {
         stringstream ss(argv[3]);
         ss >> dataSize;
 
-        if (dataSize <= 0 || dataSize > MAX_DATA_SIZE) 
-            return DisplayInvalidErr();
+        if (dataSize <= 0 || dataSize > MAX_DATA_SIZE) return DisplayInvalidErr();
 
         if (argc == 6) {
             // Check if input order is valid
@@ -138,12 +110,12 @@ int main(int argc, char **argv) {
             if (!InArray(inputOrder, validInputOrders))
                 DisplayInvalidErr();
             else
-                Command2(inputAlgos, dataSize, inputOrder, outputMode);
+                Command2(algo, dataSize, inputOrder, outputMode);
 
             return 0;
         }
-        
-        Command3(inputAlgos, dataSize, outputMode);
+
+        Command3(algo, dataSize, outputMode);
 
         return 0;
 
@@ -151,15 +123,13 @@ int main(int argc, char **argv) {
         // check if the 2 algorithms are valid
         string algo1, algo2;
 
-        if (!(NameConverter(argv[2], algo1) && NameConverter(argv[3], algo2)))
-            return DisplayInvalidErr();
+        if (!(NameConverter(argv[2], algo1) && NameConverter(argv[3], algo2))) return DisplayInvalidErr();
 
-        if (!(InArray(algo1, validAlgos) && InArray(algo2, validAlgos)))
-            return DisplayInvalidErr();
+        if (!(InArray(algo1, validAlgos) && InArray(algo2, validAlgos))) return DisplayInvalidErr();
 
         // Check whether the input argument is a file path or a number
         ifstream ifs(argv[4]);
-        
+
         if (ifs) {
             Command4(algo1, algo2, ifs);
 
@@ -174,9 +144,8 @@ int main(int argc, char **argv) {
         stringstream ss(argv[4]);
         ss >> dataSize;
 
-        if (dataSize <= 0 || dataSize > MAX_DATA_SIZE) 
-            return DisplayInvalidErr();
-        
+        if (dataSize <= 0 || dataSize > MAX_DATA_SIZE) return DisplayInvalidErr();
+
         // Check if input order is valid
         string inputOrder = argv[5];
 
