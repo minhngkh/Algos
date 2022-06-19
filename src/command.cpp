@@ -118,76 +118,76 @@ void command5(std::string algo1, std::string algo2, int dataSize, std::string da
     if (algo1 == "selection-sort"){
         info1 = SelectionSort(arr, dataSize); 
     }
-    else if (algo1 == "insertion-sort"){
+    else if (algo1 == "insertion"){
         info1 = InsertionSort(arr, dataSize);  
     }
-    else if (algo1 == "bubble-sort"){
+    else if (algo1 == "bubble"){
         info1 = BubbleSort(arr, dataSize); 
     }
-    else if (algo1 == "heap-sort"){
+    else if (algo1 == "heap"){
         info1 = HeapSort(arr, dataSize); 
     }
-    else if (algo1 == "merge-sort"){
+    else if (algo1 == "merge"){
         info1 = MergeSort(arr, dataSize); 
     }
-    else if (algo1 == "quick-sort"){
+    else if (algo1 == "quick"){
         info1 = QuickSort(arr, dataSize); 
     }
-    else if (algo1 == "radix-sort"){
+    else if (algo1 == "radix"){
         info1 = RadixSort(arr, dataSize); 
     }
-    else if (algo1 == "shaker-sort"){
+    else if (algo1 == "shaker"){
         info1 = ShakerSort(arr, dataSize); 
     }
-    else if (algo1 == "shell-sort"){
+    else if (algo1 == "shell"){
         info1 = ShellSort(arr, dataSize); 
     }
-    else if (algo1 == "counting-sort"){
+    else if (algo1 == "counting"){
         info1 = CountingSort(arr, dataSize); 
     }
-    else if (algo1 == "flash-sort"){
+    else if (algo1 == "flash"){
         info1 = FlashSort(arr, dataSize); 
     }
     // Reset arr
     arr = CopyArr(temp, dataSize);
     
     // Check name algorithm 2
-    if (algo2 == "selection-sort"){
+    if (algo2 == "selection"){
         info2 = SelectionSort(arr, dataSize); 
     }
-    else if (algo2 == "insertion-sort"){
+    else if (algo2 == "insertion"){
         info2 = InsertionSort(arr, dataSize); 
     }
-    else if (algo2 == "bubble-sort"){
+    else if (algo2 == "bubble"){
         info2 = BubbleSort(arr, dataSize); 
     }
-    else if (algo2 == "heap-sort"){
+    else if (algo2 == "heap"){
         info2 = HeapSort(arr, dataSize); 
     }
-    else if (algo2 == "merge-sort"){
+    else if (algo2 == "merge"){
         info2 = MergeSort(arr, dataSize); 
     }
-    else if (algo2 == "quick-sort"){
+    else if (algo2 == "quick"){
         info2 = QuickSort(arr, dataSize); 
     }
-    else if (algo2 == "radix-sort"){
+    else if (algo2 == "radix"){
         info2 = RadixSort(arr, dataSize); 
     }
-    else if (algo2 == "shaker-sort"){
+    else if (algo2 == "shaker"){
         info2 = ShakerSort(arr, dataSize); 
     }
-    else if (algo2 == "shell-sort"){
+    else if (algo2 == "shell"){
         info2 = ShellSort(arr, dataSize); 
     }
-    else if (algo2 == "counting-sort"){
+    else if (algo2 == "counting"){
         info2 = CountingSort(arr, dataSize); 
     }
-    else if (algo2 == "flash-sort"){
+    else if (algo2 == "flash"){
         info2 = FlashSort(arr, dataSize); 
     }
 
     // Print into the screen
-    cout << "Algorithms: " << algo1 << " | " << algo2 << endl;
+    cout << "Algorithms: " << algo1 << " sort | " << algo2 << " sort" << endl;
     cout << "Input size: " << dataSize << endl;
     cout << "Input order: " << dataOrder << endl;
     cout << "--------------------------------------------------\n";
