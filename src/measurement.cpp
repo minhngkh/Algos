@@ -3,8 +3,9 @@
 Time GetCurrTime() { return std::chrono::steady_clock::now(); }
 
 double ElapsedTime(Time start, Time end) {
-    std::chrono::duration<double, std::milli> interval = end - start;
-    return double(interval.count());
+    milliseconds interval = std::chrono::duration_cast<milliseconds>(end - start);
+
+    return interval.count();
 }
 
 int *CopyArr(int og[], int n) {
