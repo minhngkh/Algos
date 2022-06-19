@@ -19,8 +19,49 @@ Info Sort(string algo, int arr[], int n) {
     return result;
 }
 
-void Command1(string algo, ifstream &inputFile, string outputMode) { cout << "ok"; }
+void Command1(string algo, ifstream &inputFile, string outputMode) { 
+    int* a;
+    int n;
+    PrintAlgorithm(agrv[2], "");
+    readFile(agrv[3], a, n);
+    double timeuse;
+    unsigned long long int comp = 0;
+    cout << "---------------------------------------\n";
 
+    if (agrv[4] == "-time")
+        Algorithm_Time(agrv[2], a, n, timeuse);
+    else Algorithm_Both(agrv[2], a, n, comp, timeuse);
+
+
+    ModePara(agrv[4], timeuse, comp);
+    writingFile("output.txt", a, n);
+    delete[] a;
+
+ }
+void Command1(int agrc, char* agrv[])
+{
+    string mode = agrv[1];
+    Mode(mode);
+    string modeChoice(agrv[2]);
+    int* a;
+    int n;
+    PrintAlgorithm(modeChoice, "");
+    readFile(agrv[3], a, n);
+    string s4 = agrv[4];
+    double timeuse;
+    unsigned long long int comp = 0;
+    cout << "---------------------------------------\n";
+
+    if (s4 == "-time")
+        Algorithm_Time(modeChoice, a, n, timeuse);
+    else Algorithm_Both(modeChoice, a, n, comp, timeuse);
+
+
+    ModePara(s4, timeuse, comp);
+    writingFile("output.txt", a, n);
+    delete[] a;
+
+}
 void Command2(string algo, int dataSize, string dataOrder, string outputMode) { cout << "ok"; }
 
 void Command3(string algo, int dataSize, string outputMode) {
@@ -51,4 +92,123 @@ void Command3(string algo, int dataSize, string outputMode) {
 
 void Command4(string algo1, string algo2, ifstream &inputFile) { cout << "ok"; }
 
-void Command5(string algo1, string algo2, int dataSize, string dataOrder) { cout << "ok"; }
+void command5(std::string algo1, std::string algo2, int dataSize, std::string dataOrder){
+
+    // Create result variables
+    int *arr = new int[dataSize];
+
+    // Create Data
+    if (dataOrder == "-nsorted"){
+        GenerateNearlySortedData(arr, dataSize);
+    }
+    else if (dataOrder == "-rand"){
+        GenerateRandomData(arr, dataSize);
+    }
+    else if (dataOrder == "-sorted"){
+        GenerateSortedData(arr, dataSize);
+    }
+    else if (dataOrder == "-rev"){
+        GenerateReverseData(arr, dataSize);        
+    }
+
+    int *temp = CopyArr(arr, dataSize);
+    
+    Info  info1, info2;
+    // Check name algorithm 1
+    if (algo1 == "selection-sort"){
+        info1 = SelectionSort(arr, dataSize); 
+    }
+    else if (algo1 == "insertion"){
+        info1 = InsertionSort(arr, dataSize);  
+    }
+    else if (algo1 == "bubble"){
+        info1 = BubbleSort(arr, dataSize); 
+    }
+    else if (algo1 == "heap"){
+        info1 = HeapSort(arr, dataSize); 
+    }
+    else if (algo1 == "merge"){
+        info1 = MergeSort(arr, dataSize); 
+    }
+    else if (algo1 == "quick"){
+        info1 = QuickSort(arr, dataSize); 
+    }
+    else if (algo1 == "radix"){
+        info1 = RadixSort(arr, dataSize); 
+    }
+    else if (algo1 == "shaker"){
+        info1 = ShakerSort(arr, dataSize); 
+    }
+    else if (algo1 == "shell"){
+        info1 = ShellSort(arr, dataSize); 
+    }
+    else if (algo1 == "counting"){
+        info1 = CountingSort(arr, dataSize); 
+    }
+    else if (algo1 == "flash"){
+        info1 = FlashSort(arr, dataSize); 
+    }
+    // Reset arr
+    arr = CopyArr(temp, dataSize);
+    
+    // Check name algorithm 2
+    if (algo2 == "selection"){
+        info2 = SelectionSort(arr, dataSize); 
+    }
+    else if (algo2 == "insertion"){
+        info2 = InsertionSort(arr, dataSize); 
+    }
+    else if (algo2 == "bubble"){
+        info2 = BubbleSort(arr, dataSize); 
+    }
+    else if (algo2 == "heap"){
+        info2 = HeapSort(arr, dataSize); 
+    }
+    else if (algo2 == "merge"){
+        info2 = MergeSort(arr, dataSize); 
+    }
+    else if (algo2 == "quick"){
+        info2 = QuickSort(arr, dataSize); 
+    }
+    else if (algo2 == "radix"){
+        info2 = RadixSort(arr, dataSize); 
+    }
+    else if (algo2 == "shaker"){
+        info2 = ShakerSort(arr, dataSize); 
+    }
+    else if (algo2 == "shell"){
+        info2 = ShellSort(arr, dataSize); 
+    }
+    else if (algo2 == "counting"){
+        info2 = CountingSort(arr, dataSize); 
+    }
+    else if (algo2 == "flash"){
+        info2 = FlashSort(arr, dataSize); 
+    }
+
+    // Print into the screen
+    cout << "Algorithms: " << algo1 << " sort | " << algo2 << " sort" << endl;
+    cout << "Input size: " << dataSize << endl;
+    cout << "Input order: " << dataOrder << endl;
+    cout << "--------------------------------------------------\n";
+    cout << "Running time: " << info1.time << " | " << info2.time << endl;
+    cout << "Comparisons: " << info1.comparisons << " | " << info2.comparisons << endl;
+    
+    // Write down the data
+    fstream fileOut;
+    fileOut.open("input.txt", ios::out);
+    if (fileOut){
+        // Line 1
+        fileOut << dataSize << endl; 
+        // Others
+        for (int i = 0; i < dataSize; i++){
+            fileOut << temp[i] << " ";
+        }        
+    }
+    else{
+        cout << "Can't open file!\n";
+        exit(0);
+    }
+    
+    fileOut.close();    
+}
