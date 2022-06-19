@@ -104,7 +104,7 @@ void BubbleSortWithCounting(int arr[], int n, long long &comparisons) {
     comparisons = 0;
     for (int j = n; ++comparisons && j > 1; --j)
         for (int i = 1; ++comparisons && i < j; ++i)
-            if (arr[i - 1] > arr[i]) Swap(arr[i - 1], arr[i]);
+            if (++comparisons && arr[i - 1] > arr[i]) Swap(arr[i - 1], arr[i]);
 }
 
 Info BubbleSort(int arr[], int n) {
@@ -434,19 +434,45 @@ Info MergeSort(int arr[], int n) {
 }
 
 // Quick sort
+int SortFirstMiddleLastWithoutCounting(int arr[], int low, int high) {
+	int mid = low + (high - low) / 2;
+	if (arr[low] > arr[mid])
+		Swap(arr[low], arr[mid]);
+	if (arr[mid] > arr[high])
+		Swap(arr[mid], arr[high]);
+	if (arr[low] > arr[mid])
+		Swap(arr[low], arr[mid]);
+	return mid;
+}
+
 int PartitionWithoutCounting(int arr[], int low, int high) {
-    int i = low;
-    int j = high;
-    int pivot = arr[low];
-    while (i < j) {
-        while (pivot >= arr[i])
-            i++;
-        while (pivot < arr[j])
-            j--;
-        if (i < j) Swap(arr[i], arr[j]);
-    }
-    Swap(arr[low], arr[j]);
-    return j;
+	// Choose pivot using median-of-three selection   
+	int pivotIndex = SortFirstMiddleLastWithoutCounting(arr, low, high);
+	// Reposition pivot so it is last in the array
+	Swap(arr[pivotIndex], arr[high - 1]);
+	pivotIndex = high - 1;
+	int pivot = arr[pivotIndex];
+	
+	// Determine the regions S1 and S2   
+	int indexFromLeft = low + 1, indexFromRight = high - 2;
+	bool done = false;
+	while (!done) {
+		// Locate first entry on left that is >= pivot      
+		while (arr[indexFromLeft] < pivot) indexFromLeft++;
+		// Locate first entry on right that is <= pivot      
+		while (arr[indexFromRight] > pivot) indexFromRight--;
+		// Swap the two found entries
+		if (indexFromLeft < indexFromRight) {
+			Swap(arr[indexFromLeft], arr[indexFromRight]);
+			indexFromLeft++; indexFromRight--;
+		}
+		else done = true;
+	}
+
+	// Place pivot in proper position between S1 and S2
+	Swap(arr[pivotIndex], arr[indexFromLeft]);
+	pivotIndex = indexFromLeft;  // and mark its new location 
+	return pivotIndex;
 }
 
 void QuickSortWithoutCounting(int arr[], int low, int high) {
@@ -457,19 +483,45 @@ void QuickSortWithoutCounting(int arr[], int low, int high) {
     }
 }
 
+int SortFirstMiddleLastWithCounting(int arr[], int low, int high, long long &comparisons) {
+	int mid = low + (high - low) / 2;
+	if (++comparisons && arr[low] > arr[mid])
+		Swap(arr[low], arr[mid]);
+	if (++comparisons && arr[mid] > arr[high])
+		Swap(arr[mid], arr[high]);
+	if (++comparisons && arr[low] > arr[mid])
+		Swap(arr[low], arr[mid]);
+	return mid;
+}
+
 int PartitionWithCounting(int arr[], int low, int high, long long &comparisons) {
-    int i = low;
-    int j = high;
-    int pivot = arr[low];
-    while (++comparisons && i < j) {
-        while (++comparisons && pivot >= arr[i])
-            i++;
-        while (++comparisons && pivot < arr[j])
-            j--;
-        if (++comparisons && i < j) Swap(arr[i], arr[j]);
-    }
-    Swap(arr[low], arr[j]);
-    return j;
+	// Choose pivot using median-of-three selection   
+	int pivotIndex = SortFirstMiddleLastWithCounting(arr, low, high, comparisons);
+	// Reposition pivot so it is last in the array
+	Swap(arr[pivotIndex], arr[high - 1]);
+	pivotIndex = high - 1;
+	int pivot = arr[pivotIndex];
+	
+	// Determine the regions S1 and S2   
+	int indexFromLeft = low + 1, indexFromRight = high - 2;
+	bool done = false;
+	while (!done) {
+		// Locate first entry on left that is >= pivot      
+		while (++comparisons && arr[indexFromLeft] < pivot) indexFromLeft++;
+		// Locate first entry on right that is <= pivot      
+		while (++comparisons && arr[indexFromRight] > pivot) indexFromRight--;
+		// Swap the two found entries
+		if (++comparisons && indexFromLeft < indexFromRight) {
+			Swap(arr[indexFromLeft], arr[indexFromRight]);
+			indexFromLeft++; indexFromRight--;
+		}
+		else done = true;
+	}
+
+	// Place pivot in proper position between S1 and S2
+	Swap(arr[pivotIndex], arr[indexFromLeft]);
+	pivotIndex = indexFromLeft;  // and mark its new location 
+	return pivotIndex;
 }
 
 void QuickSortWithCounting(int arr[], int low, int high, long long &comparisons) {
