@@ -1,13 +1,20 @@
-#include "algorithms.hpp"
-#include "DataGenerator.hpp"
+#pragma once
 
-#include <string>
 #include <fstream>
-#include <vector>
 #include <iostream>
+#include <string>
+#include <vector>
+
+#include "DataGenerator.hpp"
+#include "algorithms.hpp"
 
 #define NUM_DATA_ORDER 4
-const std::vector<std::string> DATA_ORDERS = {"Randomized", "Sorted", "Reverse sorted", "Nearly sorted"};
+
+// I have to do this due to inconsistent numbering in the teacher provided cpp file (DataGenerator.cpp) and pdf file
+const std::vector<std::vector<std::string>> DATA_ORDERS = {{"Randomized", "1", "-rand"},
+                                                           {"Sorted", "3", "-sorted"},
+                                                           {"Reverse sorted", "4", "-rev"},
+                                                           {"Nearly sorted", "2", "-nsorted"}};
 
 const std::string BREAK_LINE = std::string(25, '-');
 
