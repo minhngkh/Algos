@@ -144,7 +144,7 @@ int main(int argc, char **argv) {
         stringstream ss(argv[4]);
         ss >> dataSize;
 
-        if (dataSize <= 0 || dataSize > MAX_DATA_SIZE) return DisplayInvalidErr();
+        if (dataSize <= 0 || dataSize > MAX_DATA_SIZE || argc < 6) return DisplayInvalidErr();
 
         // Check if input order is valid
         string inputOrder = argv[5];
