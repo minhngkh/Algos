@@ -44,7 +44,6 @@ void Command1(string algo, ifstream &inputFile, string fileName, string outputMo
     cout << "Algorithm: " << char(toupper(algo[0])) << algo.substr(1) << " sort" << '\n';
     cout << "Input file: " << fileName << '\n';
 
-
     string temp;
     getline(inputFile, temp);
     int dataSize = stoi(temp);
@@ -135,7 +134,39 @@ void Command3(string algo, int dataSize, string outputMode) {
     }
 }
 
-void Command4(string algo1, string algo2, ifstream &inputFile, string fileName) { cout << "ok"; }
+void Command4(std::string algo1, std::string algo2, std::ifstream &inputFile, std::string fileName) {
+    // Create result variables
+
+    int *arr = NULL, size, i = 0;
+
+    // Read the data from file
+    // Line 1
+    inputFile >> size;
+    // Other line
+    arr = new int[size];
+
+    while (!inputFile.eof()) {
+        inputFile >> arr[i++];
+    }
+    // Create temp array to store data
+    int *temp = CopyArr(arr, size);
+
+    Info info1, info2;
+    // Check name algorithm 1
+    info1 = Sort(algo1, arr, size);
+    // Reset arr
+    arr = CopyArr(temp, size);
+
+    // Check name algorithm 2
+    info2 = Sort(algo2, arr, size);
+
+    cout << "Algorithms: " << algo1 << " | " << algo2 << '\n';
+    cout << "Input size: " << size << '\n';
+    cout << "Input file name: " << fileName << '\n';
+    cout << "--------------------------------------------------\n";
+    cout << "Running time: " << info1.time << " | " << info2.time << '\n';
+    cout << "Comparisons: " << info1.comparisons << " | " << info2.comparisons << '\n';
+}
 
 void Command5(std::string algo1, std::string algo2, int dataSize, std::string dataOrder) {
     // Create result variables
