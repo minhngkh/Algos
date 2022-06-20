@@ -86,7 +86,7 @@ int main(int argc, char **argv) {
             if (argc > 5)
                 DisplayInvalidErr();
             else
-                Command1(algo, ifs, outputMode);
+                Command1(algo, ifs, argv[3], outputMode);
 
             ifs.close();
 
@@ -131,7 +131,7 @@ int main(int argc, char **argv) {
         ifstream ifs(argv[4]);
 
         if (ifs) {
-            Command4(algo1, algo2, ifs);
+            Command4(algo1, algo2, ifs, argv[4]);
 
             ifs.close();
             return 0;

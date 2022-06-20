@@ -39,7 +39,41 @@ Info Sort(string algo, int arr[], int n) {
     return result;
 }
 
-void Command1(string algo, ifstream &inputFile, string outputMode) { cout << "ok"; }
+void Command1(string algo, ifstream &inputFile, string fileName, string outputMode) {
+    cout << "ALGORITHM MODE" << '\n';
+    cout << "Algorithm: " << char(toupper(algo[0])) << algo.substr(1) << " sort" << '\n';
+    cout << "Input file: " << fileName << '\n';
+
+
+    string temp;
+    getline(inputFile, temp);
+    int dataSize = stoi(temp);
+    int count = 0;
+
+    cout << "Input Size: " << dataSize << '\n';
+    cout << BREAK_LINE << '\n';
+
+    int *arr = new int[dataSize];
+    while (getline(inputFile, temp, ' ')) {
+        arr[count] = stoi(temp);
+        ++count;
+    }
+
+    if (count != dataSize) {
+        cout << "File is in wrong format";
+
+        exit(0);
+    }
+
+    Info sortResult = Sort(algo, arr, dataSize);
+
+    WriteFile(arr, dataSize, "output.txt");
+
+    delete[] arr;
+
+    if (outputMode != "-comp") cout << "Running time: " << sortResult.time << '\n';
+    if (outputMode != "-time") cout << "Comparisons: " << sortResult.comparisons;
+}
 
 void Command2(string algo, int dataSize, string dataOrder, string outputMode) {
     cout << "ALGORITHM MODE" << '\n';
@@ -101,7 +135,7 @@ void Command3(string algo, int dataSize, string outputMode) {
     }
 }
 
-void Command4(string algo1, string algo2, ifstream &inputFile) { cout << "ok"; }
+void Command4(string algo1, string algo2, ifstream &inputFile, string fileName) { cout << "ok"; }
 
 void Command5(std::string algo1, std::string algo2, int dataSize, std::string dataOrder) {
     // Create result variables
