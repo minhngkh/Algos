@@ -101,7 +101,48 @@ void Command3(string algo, int dataSize, string outputMode) {
     }
 }
 
-void Command4(string algo1, string algo2, ifstream &inputFile) { cout << "ok"; }
+void Command4(std::string algo1, std::string algo2, std::ifstream &inputFile){
+
+    // Create result variables
+    
+    int *arr = NULL, size, i = 0;
+
+    // Read the data from file
+    inputFile.open("input.txt", ios::in);
+    if (inputFile){
+        // Line 1
+        inputFile >> size;
+        // Other line
+        arr = new int[size];
+        
+        while (!inputFile.eof()){
+            inputFile >> arr[i++];
+        }        
+    }
+    else{
+        cout << "Can't open file!\n";
+        exit(0);
+    }
+    // Create temp array to store data
+    int *temp = CopyArr(arr, size);
+
+    Info info1, info2;
+    // Check name algorithm 1
+    info1 = Sort(algo1, arr, size);
+    // Reset arr
+    arr = CopyArr(temp, size);
+
+    // Check name algorithm 2
+    info2 = Sort(algo2, arr, size);
+
+    
+    cout << "Algorithms: " << algo1 << " | " << algo2 << endl;
+    cout << "Input size: " << size << endl;
+    cout << "Input file name: " << "input.txt" << endl;
+    cout << "--------------------------------------------------\n";
+    cout << "Running time: " << info1.time << " | " << info2.time << '\n';
+    cout << "Comparisons: " << info1.comparisons << " | " << info2.comparisons << '\n';
+}
 
 void Command5(std::string algo1, std::string algo2, int dataSize, std::string dataOrder) {
     // Create result variables
